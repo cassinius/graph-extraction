@@ -1,183 +1,209 @@
 <html>
 
 <head>
-  <title>Canvas Image Extract Test</title>
-  <link rel="stylesheet" type="text/css" href="./css/imagednd.css">
+	<title>Canvas Image Extract Test</title>
+	<link rel="stylesheet" type="text/css" href="./css/main.css">
+	<link rel="stylesheet" type="text/css" href="./css/cookieBanner.css" />
+
 </head>
 
 <body>
 
-  <div id="page_wrap">
+  <div id="bg-cover"></div>
 
-    <div id="title">The Great (Graph) Extractor</div>
+	<div id="page_wrap">
+
+    <!-- Most important section of all the site -->
+		<div id="cookieBanner">
+			<span class="cookieBannerText">
+				This website uses cookies to track user traffic via Google Analytics in accordance with the European General Data Protection Regulations (GDPR). Please have a look at our <a href="/gdpr/BMprivacyPolicy.pdf" target="_blank"/>Privacy Policy</a>, our <a href="/gdpr/BMcookiePolicy.pdf" target="_blank"/>Cookie Policy</a> or read the Google Analytics <a href="https://support.google.com/analytics/answer/3379636" target="_blank">Data Processing Terms</a>. Please confirm your agreement by clicking "OK".
+				</span>
+
+				<span id="cookieBannerOKButton" class="noselect" onclick="acceptsGACookie()">OK</span>
+		</div>
+
+
+		<div id="title">The Great (Graph) Extractor</div>
 
 		<!-- ################################################ -->
 		<!-- 					CANVASES  					  -->
 		<!-- ################################################ -->
 
-    <div id="img_canvas_box">
-      <canvas id="img_canvas" width="512" height="512"></canvas>
-      <div id="click_text"> or click to open a file browser </div>
-    </div>
-    <input type="file" id="input_file" accept="image/*" />
-    <canvas id="region_canvas" width="512" height="512"></canvas>
-    <canvas id="delaunay_canvas" width="512" height="512"></canvas>
+		<div id="img_canvas_box">
+			<canvas id="img_canvas" width="512" height="512"></canvas>
+			<div id="click_text"> or click to open a file browser </div>
+		</div>
+		<input type="file" id="input_file" accept="image/*" />
+		<canvas id="region_canvas" width="512" height="512"></canvas>
+		<canvas id="delaunay_canvas" width="512" height="512"></canvas>
 
 		<!-- ################################################ -->
 		<!-- 				  IMAGE INFO 					  -->
 		<!-- ################################################ -->
-    <div id="img_info">
-      <div id="img_width" class="info-box">
-        <span class="title">
-          Width:
-        </span>
-        <span class="value"></span>
-      </div>
-      <div id="img_height" class="info-box">
-        <span class="title">
-          Height:
-        </span>
-        <span class="value"></span>
-      </div>
-      <div id="img_pixels" class="info-box">
-        <span class="title">
-          Pixels:
-        </span>
-        <span class="value"></span>
-      </div>
-      <div id="img_regions" class="info-box">
-        <span class="title">
-          Regions:
-        </span>
-        <span class="value"></span>
-      </div>
-    </div>
+		<div id="img_info">
+			<div id="img_width" class="info-box">
+				<span class="title">
+					Width:
+				</span>
+				<span class="value"></span>
+			</div>
+			<div id="img_height" class="info-box">
+				<span class="title">
+					Height:
+				</span>
+				<span class="value"></span>
+			</div>
+			<div id="img_pixels" class="info-box">
+				<span class="title">
+					Pixels:
+				</span>
+				<span class="value"></span>
+			</div>
+			<div id="img_regions" class="info-box">
+				<span class="title">
+					Regions:
+				</span>
+				<span class="value"></span>
+			</div>
+		</div>
 
 		<!-- ################################################ -->
 		<!--    FOLDER DROP (well, 'read' for now...)         -->
 		<!-- ################################################ -->
-        <input type="file" id="files" name="files[]" multiple /><br/>
-		<div id="folder-drop">
-          <!--<output id="list"></output>-->
-          <!--<div class="drop-msg"> MsgBox </div>-->
-		</div>
+		<input type="file" id="files" name="files[]" multiple />
+		<br/>
+			<div id="folder-drop">
+				<!--<output id="list"></output>-->
+				<!--<div class="drop-msg"> MsgBox </div>-->
+			</div>
 
 
-    <div id="graph_processing">
-      <!-- ################################################ -->
-      <!-- 			    IMAGE PREPROCESSING				  -->
-      <!-- ################################################ -->
-      <div class="algo-group" id="img_preproc">
-          <h3>Image Preprocessing (Simple)</h3>
-          <span id="proc_grayscale" class="button">
-              GrayScale
-          </span>
-          <span id="proc_invert" class="button">
-              InvertColors
-          </span>
-          <span id="proc_sharpen" class="button">
-              Sharpen
-          </span>
-          <span id="proc_blur" class="button">
-              Blur
-          </span>
-          <span id="proc_sobel" class="button">
-              Sobel
-          </span>
-      </div>
+			<div id="graph_processing">
+				<!-- ################################################ -->
+				<!-- 			    IMAGE PREPROCESSING				  -->
+				<!-- ################################################ -->
+				<div class="algo-group" id="img_preproc">
+					<h3>Image Preprocessing (Simple)</h3>
+					<span id="proc_grayscale" class="button">
+						GrayScale
+					</span>
+					<span id="proc_invert" class="button">
+						InvertColors
+					</span>
+					<span id="proc_sharpen" class="button">
+						Sharpen
+					</span>
+					<span id="proc_blur" class="button">
+						Blur
+					</span>
+					<span id="proc_sobel" class="button">
+						Sobel
+					</span>
+				</div>
 
-      <!-- ################################################ -->
-      <!-- 				KRUSKAL SETTINGS	              -->
-      <!-- ################################################ -->
-      <div class="algo-group" id="region_merge">
-        <h3>Kruskal based Region Merging:</h3>
-        <div id="start" class="button element" onclick="startGraphExtraction('kruskalrm')">
-          Single Kruskal
-        </div>
-        <div id="start" class="button element" onclick="batchKruskal();">
-          Batch Kruskal
-        </div>
-
-
-        <div class="element">
-          k-Threshold:
-          <span id="k-threshold-info" class="info"> k </span>
-          <br/>
-          <input id="k-threshold" type="range" min="50" max="2000" step="25" value="200" oninput="updateKThres(this.value)">
-        </div>
-        <div class="element">
-          size-Threshold:
-          <span id="rm-size-threshold-info" class="info"> size </span>
-          <br/>
-          <input id="rm-size-threshold" type="range" min="0" max="100" step="1" value="0" oninput="updateRMSizeThres(this.value)">
-        </div>
-        <div class="element">
-          max merge size:
-          <span id="max-merge-info" class="info"> max </span>
-          <br/>
-          <input id="max-merge" type="range" min="50" max="3000" step="25" value="3000" oninput="updateMaxMerge(this.value)">
-        </div>
-      </div>
-      <div class="clear"></div>
+				<!-- ################################################ -->
+				<!-- 				KRUSKAL SETTINGS	              -->
+				<!-- ################################################ -->
+				<div class="algo-group" id="region_merge">
+					<h3>Kruskal based Region Merging:</h3>
+					<div id="start" class="button element" onclick="startGraphExtraction('kruskalrm')">
+						Single Kruskal
+					</div>
+					<div id="start" class="button element" onclick="batchKruskal();">
+						Batch Kruskal
+					</div>
 
 
-      <!-- ################################################ -->
-      <!-- 			  WATERSHED SETTINGS				  -->
-      <!-- ################################################ -->
-      <div class="algo-group" id="watershed">
-        <h3>Watershed Transformation:</h3>
-        <div id="start" class="button element" onclick="startGraphExtraction('watershed')">
-          Single Watershed
-        </div>
+					<div class="element">
+						k-Threshold:
+						<span id="k-threshold-info" class="info"> k </span>
+						<br/>
+							<input id="k-threshold" type="range" min="50" max="2000" step="25" value="200" oninput="updateKThres(this.value)">
+					</div>
+					<div class="element">
+						size-Threshold:
+						<span id="rm-size-threshold-info" class="info"> size </span>
+						<br/>
+							<input id="rm-size-threshold" type="range" min="0" max="100" step="1" value="0" oninput="updateRMSizeThres(this.value)">
+					</div>
+					<div class="element">
+						max merge size:
+						<span id="max-merge-info" class="info"> max </span>
+						<br/>
+							<input id="max-merge" type="range" min="50" max="3000" step="25" value="3000" oninput="updateMaxMerge(this.value)">
+					</div>
+				</div>
+				<div class="clear"></div>
 
 
-        <div class="element">
-          Max #labels:
-          <span id="l-threshold-info" class="info"> l </span>
-          <br/>
-          <input id="l-threshold" type="range" min="100" max="20000" step="100" value="20000" oninput="updateLThres(this.value)">
-        </div>
-        <div class="element">
-          size-Threshold:
-          <span id="ws-size-threshold-info" class="info"> size </span>
-          <br/>
-          <input id="ws-size-threshold" type="range" min="0" max="100" step="1" value="5" oninput="updateWSSizeThres(this.value)">
-        </div>
-      </div>
-    </div>
-
-    <div id="progress"></div>
-
-    <!-- <a id="start_visualization" class="button" href=""> Visualize 3D! </a> -->
-
-  </div>
-
-  <a id="hidden-download" href="" style="display:none">I should not be visible</a>
-
-  <div id="graph_visualization">
-    <canvas id="vis_canvas" width="1024" height="768"></canvas>
-    <div id="vis_stats"></div>
-    <div id="vis_info"></div>
-    <div id="vis_message"></div>
-  </div>
+				<!-- ################################################ -->
+				<!-- 			  WATERSHED SETTINGS				  -->
+				<!-- ################################################ -->
+				<div class="algo-group" id="watershed">
+					<h3>Watershed Transformation:</h3>
+					<div id="start" class="button element" onclick="startGraphExtraction('watershed')">
+						Single Watershed
+					</div>
 
 
+					<div class="element">
+						Max #labels:
+						<span id="l-threshold-info" class="info"> l </span>
+						<br/>
+							<input id="l-threshold" type="range" min="100" max="20000" step="100" value="20000" oninput="updateLThres(this.value)">
+					</div>
+					<div class="element">
+						size-Threshold:
+						<span id="ws-size-threshold-info" class="info"> size </span>
+						<br/>
+							<input id="ws-size-threshold" type="range" min="0" max="100" step="1" value="5" oninput="updateWSSizeThres(this.value)">
+					</div>
+				</div>
+			</div>
 
-  <script type="text/javascript" src="./js/jquery-2.1.0.min.js"></script>
-  <script type="text/javascript" src="./js/async.js"></script>
+			<div id="progress"></div>
 
-  <script type="text/javascript" src="./js/img_input.js"></script>
-  <script type="text/javascript" src="./js/img_filters.js"></script>
-  <script type="text/javascript" src="./js/img_processing.js"></script>
-  <script type="text/javascript" src="./js/delaunay.js"></script>
+			<!-- <a id="start_visualization" class="button" href=""> Visualize 3D! </a> -->
 
-  <script type="text/javascript" src="./js/JSAlgorithms.js"></script>
-  <script type="text/javascript" src="./js/download.js"></script>
-  <!-- <script type="text/javascript" src="./js/JSAlgorithms.min.js"></script> -->
+	</div>
 
-  <script type="text/javascript" src="./js/readfiles.js"></script>
-  <script type="text/javascript" src="./js/main.js"></script>
+	<a id="hidden-download" href="" style="display:none">I should not be visible</a>
 
+	<div id="graph_visualization">
+		<canvas id="vis_canvas" width="1024" height="768"></canvas>
+		<div id="vis_stats"></div>
+		<div id="vis_info"></div>
+		<div id="vis_message"></div>
+	</div>
+
+
+
+	<script type="text/javascript" src="./js/jquery-2.1.0.min.js">
+	</script>
+	<script type="text/javascript" src="./js/async.js">
+	</script>
+
+	<script type="text/javascript" src="./js/img_input.js">
+	</script>
+	<script type="text/javascript" src="./js/img_filters.js">
+	</script>
+	<script type="text/javascript" src="./js/img_processing.js">
+	</script>
+	<script type="text/javascript" src="./js/delaunay.js">
+	</script>
+
+	<script type="text/javascript" src="./js/JSAlgorithms.js">
+	</script>
+	<script type="text/javascript" src="./js/download.js">
+	</script>
+	<!-- <script type="text/javascript" src="./js/JSAlgorithms.min.js"></script> -->
+
+	<script type="text/javascript" src="./js/readfiles.js">
+	</script>
+	<script type="text/javascript" src="./js/main.js">
+	</script>
+
+  <script type="text/javascript" src="./js/utils/gaCookies.js"></script>
 
 </body>
 

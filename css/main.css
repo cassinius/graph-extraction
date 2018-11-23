@@ -1,0 +1,283 @@
+* {
+  font-family: Georgia;
+  /*font-size: 16px;*/
+}
+
+html {
+	font-family: "Sans-Serif", "Calibri";
+  font-size: 14px;
+  color: #ccc;
+  background-color: #111;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                supported by Chrome and Opera */
+}
+
+
+#bg-cover {
+  position: fixed;
+  top: -15px;
+  left: -15px;
+  right: -15px;
+  bottom: -15px;
+  z-index: -5;
+  background:
+    /* top, transparent black, faked with gradient */
+    linear-gradient(
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.7)
+    ),
+    url(../images/tron_mountains.jpg) fixed;
+
+  background-size: cover;
+  background-position: 50% 50%;
+  -webkit-filter: blur(3px);
+  filter: blur(3px);
+}
+
+
+#page_wrap {
+  position: relative;
+}
+
+#title {
+  position: absolute;
+  left: 20px;
+  font-size: 40px;
+}
+
+#input_file {
+  width: 0;
+  height: 0;
+  visibility: hidden;
+}
+
+canvas {
+	background-color: rgba(130, 130, 130, 0.3);
+	border-radius: 10px;
+}
+
+#img_canvas_box {
+  position: absolute;
+  left: 20px;
+  top: 50px;
+  width: 512px;
+  height: 512px;
+  background:  url(../images/drop_bg.png);
+	background-size: 512px 512px;
+	/* opacity: 0.3; */
+  overflow: hidden;
+}
+
+#click_text {
+  position: absolute;
+  left: 20px;
+  top: 582;
+  height: 120px;
+  width: 412;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  font-size: 50px;
+  padding: 15px 30px 15px 30px;
+  text-align: center;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+#img_canvas_box:hover {
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+#region_canvas {
+  position: absolute;
+  left: 540px;
+  top: 50px;
+  width: 512px;
+  height: 512px;
+}
+
+#delaunay_canvas {
+  position: absolute;
+  left: 1060px;
+  top: 50px;
+  width: 512px;
+  height: 512px;
+}
+
+#img_info {
+  position: absolute;
+  left: 20px;
+  top: 580px;
+}
+
+#files {
+  position: absolute;
+  left: 20px;
+  top: 630px;
+  font-size: 18px;
+}
+
+#folder-drop {
+  position: absolute;
+  left: 20px;
+  top: 670px;
+  width: 652px;
+  height: 234px;
+  background: #abcdef;
+  overflow: auto;
+  padding-top: 5px;
+  padding-left: 10px;
+}
+
+#folder-drop>span {
+  width: 50px;
+  height: 50px;
+}
+
+.thumb {
+  height: 50px;
+  border: 1px solid #000;
+  margin: 5px 5px 0 0;
+  box-sizing: border-box;
+}
+
+.thumb:hover {
+  cursor: pointer;
+}
+
+.thumb.selected {
+  border: 5px solid #CC0000;
+}
+
+/*.dropzone {*/
+
+/*width: 660px;*/
+
+/*height: 270px;*/
+
+/*}*/
+
+/*.drop-msg {*/
+
+/*height: 30px;*/
+
+/*line-height: 30px;*/
+
+/*font-size: 24px !important;*/
+
+/*}*/
+
+#graph_processing {
+  position: absolute;
+  left: 700px;
+  top: 630px;
+  width: 820px;
+}
+
+.algo-group {
+  display: block;
+}
+
+#graph_processing .element {
+  float: left;
+  margin-right: 10px;
+}
+
+#progress {
+  position: absolute;
+  left: 680px;
+  top: 580px;
+  width: 885px;
+  height: 38px;
+  line-height: 38px;
+  vertical-align: middle;
+  font-size: 26px;
+  background-color: #333;
+  padding-left: 8px;
+}
+
+.info {
+  display: inline-block;
+  width: 30px;
+  height: 20px;
+}
+
+.info-box {
+  float: left;
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #333;
+  font-size: 14px;
+}
+
+.info-box .value {
+  float: right;
+}
+
+#img_width.info-box,
+#img_height.info-box {
+  width: 115px;
+}
+
+#img_pixels.info-box,
+#img_regions.info-box {
+  width: 135px;
+}
+
+#img_preproc {
+  /*margin-top: 10px;*/
+}
+
+.button {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  padding: 10px;
+  text-align: center;
+  background-color: #333;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+a#start_visualization {
+  display: inline-block;
+  position: absolute;
+  left: 1260px;
+  top: 635px;
+  text-decoration: none;
+  font-size: 32px;
+}
+
+#graph_visualization {
+  position: absolute;
+  left: 20px;
+  top: 850px;
+  width: 1050px;
+  height: 1000px;
+  background-color: #111111;
+  display: none;
+}
+
+.clear {
+  clear: both;
+}

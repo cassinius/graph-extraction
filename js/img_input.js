@@ -1,4 +1,3 @@
-
 var MAX_WIDTH = 800;
 
 var render = function (src){
