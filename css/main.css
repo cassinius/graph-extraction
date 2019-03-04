@@ -34,8 +34,8 @@ html {
   right: -15px;
   bottom: -15px;
   z-index: -5;
+  background: white;
   background:
-    /* top, transparent black, faked with gradient */
     linear-gradient(
       rgba(0, 0, 0, 0.7),
       rgba(0, 0, 0, 0.7)

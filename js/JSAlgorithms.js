@@ -19,7 +19,7 @@ var Helper;
 /// <reference path="../typings/tsd.d.ts" />
 var Matrix;
 (function (Matrix) {
-    var Matrix2D = (function () {
+    var Matrix2D = /** @class */ (function () {
         function Matrix2D(d1, d2, fill) {
             this.d1 = d1;
             this.d2 = d2;
@@ -173,11 +173,12 @@ var Matrix;
             if (diff === void 0) { diff = false; }
             if (diff) {
                 var here = this.get(x, y), there = this.get(x + n, y + m);
-                if (typeof here === 'number') {
+                if (typeof here === 'number') { // already a Gray Image
                     // why Math.abs ? Don't we want gradients later.. ?
                     return [x + n, y + m, Math.abs(here - there)];
+                    // neighborsArray.push([x + n, y + m, here - there] );
                 }
-                else if (Array.isArray(here)) {
+                else if (Array.isArray(here)) { // RGB conversion !
                     var gray_here = 0.2126 * here[0] + 0.7152 * here[1] + 0.0722 * here[2];
                     there = this.get(x + n, y + m);
                     var gray_there = 0.2126 * there[0] + 0.7152 * there[1] + 0.0722 * there[2];
@@ -209,7 +210,7 @@ var Matrix;
 /// <reference path="../typings/tsd.d.ts" />
 var DJSet;
 (function (DJSet) {
-    var DisjointSet = (function () {
+    var DisjointSet = /** @class */ (function () {
         // we make this a continuous DJSet for the moment, i.e.
         // our elements are numberd 0 .. size-1
         function DisjointSet(size) {
@@ -262,7 +263,7 @@ var DJSet;
 var M2D = Matrix.Matrix2D;
 var Images;
 (function (Images) {
-    var RgbImage = (function () {
+    var RgbImage = /** @class */ (function () {
         // as we are only using this with HTML canvas, we always assume rgba inputs
         function RgbImage(width, height, rgba) {
             this.width = width;
@@ -304,7 +305,7 @@ var Images;
         return RgbImage;
     }());
     Images.RgbImage = RgbImage;
-    var GrayImage = (function () {
+    var GrayImage = /** @class */ (function () {
         // as we are only using this with HTML canvas, we always assume rgba inputs
         function GrayImage(width, height, rgba) {
             this.width = width;
@@ -366,7 +367,7 @@ var Images;
 var M2D = Matrix.Matrix2D;
 var ImgGraphs;
 (function (ImgGraphs) {
-    var ImgGraph = (function () {
+    var ImgGraph = /** @class */ (function () {
         function ImgGraph(adj_list, sort, asc) {
             this.adj_list = adj_list;
             this.edge_list = this.computeEdgeList();
@@ -428,7 +429,7 @@ var Regions;
     *   @member labels
     *
     */
-    var RegionMap = (function () {
+    var RegionMap = /** @class */ (function () {
         function RegionMap(width, height, img, orig_img) {
             this.regions = {};
             this.labels = new M2D(width, height);
@@ -477,7 +478,7 @@ var Regions;
         return RegionMap;
     }());
     Regions.RegionMap = RegionMap;
-    var Region = (function () {
+    var Region = /** @class */ (function () {
         function Region(id) {
             this.id = id;
             // TODO: WHY OH WHY IS THE TYPE SYSTEM SO SHY ???
@@ -1662,10 +1663,18 @@ var drawGraph = function() {
     for ( var i = 0; i < node_keys.length; i++ ) {
         var node = outGraph.data[node_keys[i]];
         for (var e = 0; e < node.edges.length; e++) {
-            var target = node.edges[e].to;
+            var target = outGraph.data[node.edges[e].to];
             delctx.beginPath();
             delctx.moveTo(node.coords.x, node.coords.y);
-            delctx.lineTo(outGraph.data[target].coords.x, outGraph.data[target].coords.y);
+            delctx.lineTo(target.coords.x, target.coords.y);
+
+            var linearGradient = delctx.createLinearGradient(
+                node.coords.x, node.coords.y,
+                target.coords.x, target.coords.y
+            );
+            linearGradient.addColorStop(0, 'rgb('+node.features.color.r+','+node.features.color.g+','+node.features.color.b+')' );
+            linearGradient.addColorStop(1, 'rgb('+target.features.color.r+','+target.features.color.g+','+target.features.color.b+')' );
+            delctx.strokeStyle = linearGradient;
             delctx.stroke();
         }
     }
